@@ -1,12 +1,12 @@
+# EX-4 : IMPLEMENTATION OF MLP WITH BACKPROPAGATION FOR MULTICLASSIFICATION
 
-<H3>ENTER YOUR NAME</H3>
-<H3>ENTER YOUR REGISTER NO.</H3>
-<H3>EX. NO.4</H3>
-<H3>DATE:</H3>
-<H1 ALIGN =CENTER>Implementation of MLP with Backpropagation for Multiclassification</H1>
-<H3>Aim:</H3>
+#### NAME : MOHAMED RASHITH S
+#### R.NO : 212223243003
+
+## AIM :
 To implement a Multilayer Perceptron for Multi classification
-<H3>Theory</H3>
+
+## THEORY :
 
 A multilayer perceptron (MLP) is a feedforward artificial neural network that generates a set of outputs from a set of inputs. An MLP is characterized by several layers of input nodes connected as a directed graph between the input and output layers. MLP uses back propagation for training the network. MLP is a deep learning method.
 A multilayer perceptron is a neural network connecting multiple layers in a directed graph, which means that the signal path through the nodes only goes one way. Each node, apart from the input nodes, has a nonlinear activation function. An MLP uses backpropagation as a supervised learning technique.
@@ -95,7 +95,7 @@ In the backward pass,
 
 ![image](https://user-images.githubusercontent.com/112920679/198814362-05a251fd-fceb-43cd-867b-75e6339d870a.png)
 
-<H3>Algorithm:</H3>
+## ALGORITHM :
 
 1. Import the necessary libraries of python.
 
@@ -114,13 +114,56 @@ Normalize our dataset.
 
 8. Finally, call the functions confusion_matrix(), and the classification_report() in order to evaluate the performance of our classifier.
 
-<H3>Program:</H3> 
+## PROGRAM :
 
-Insert your code here
 
-<H3>Output:</H3>
+```
+import pandas as pd
+from sklearn import preprocessing
+from sklearn.model_selection import train_test_split
+from sklearn.preprocessing import StandardScaler
+from sklearn.neural_network import MLPClassifier
+from sklearn.metrics import classification_report, confusion_matrix
 
-Show your results here
+url = "https://archive.ics.uci.edu/ml/machine-learning-databases/wine/wine.data"
 
-<H3>Result:</H3>
+names = ["Class", "Alcohol", "Malic_acid", "Ash", "Magnesium"]
+
+winedata = pd.read_csv(url, names=names, usecols=[0, 1, 2, 3, 5])
+
+print(winedata.head())
+
+x = winedata.iloc[:, 1:]   # features
+y = winedata["Class"]      # labels
+
+# Encode labels
+le = preprocessing.LabelEncoder()
+y_encoded = le.fit_transform(y)
+
+x_train, x_test, y_train, y_test = train_test_split(x, y_encoded, test_size=0.25, random_state=42)
+
+scaler = StandardScaler()
+scaler.fit(x_train)
+x_train = scaler.transform(x_train)
+x_test = scaler.transform(x_test)
+
+mlp = MLPClassifier(hidden_layer_sizes=(10,10,10), max_iter=1000, random_state=42)
+mlp.fit(x_train, y_train)
+
+predictions = mlp.predict(x_test)
+predicted_classes = le.inverse_transform(predictions)
+
+# Confusion matrix
+print(confusion_matrix(y_test, predictions))
+
+# Classification report with proper class labels
+print(classification_report(y_test, predictions, target_names=[f"Wine-Class-{c}" for c in le.classes_]))
+```
+## OUTPUT :
+
+<img width="927" height="403" alt="image" src="https://github.com/user-attachments/assets/164f6720-d241-4a9a-bdc7-72761d8fc77d" />
+
+
+## RESULT :
 Thus, MLP is implemented for multi-classification using python.
+
